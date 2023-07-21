@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\BarangController;
+use App\Http\Controllers\Admin;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use \App\Http\Controllers\User;
@@ -28,17 +28,17 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Admin Route
-    Route::resource('barang', BarangController::class)->middleware(['isAdmin']);
 
     // User Route
-    // Route::resource('pinjam', User\PinjamController::class);
     Route::get('daftar-barang', [User\BarangController::class, 'index'])->name('list.barang');
 
     Route::get('pinjam/{id}', [User\PinjamController::class, 'create'])->name('pinjam.create');
     Route::post('pinjam/{id}', [User\PinjamController::class, 'store'])->name('pinjam.store');
-    Route::put('pinjam/{id}', [User\PinjamController::class, 'store'])->name('pinjam.update');
-    Route::delete('pinjam/{id}', [User\PinjamController::class, 'destroy'])->name('pinjam.destroy');
+    Route::put('pinjam/{id}', [User\PinjamController::class, 'update'])->name('pinjam.update');
+
+    // Admin Route
+    Route::resource('barang', Admin\BarangController::class)->middleware(['isAdmin']);
+    Route::put('pinjam/{id}/proses', [Admin\PinjamController::class, 'prosesPeminjaman'])->middleware('isAdmin')->name('pinjaman.proses');
 });
 
 require __DIR__.'/auth.php';

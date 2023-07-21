@@ -8,6 +8,7 @@ use App\Models\History;
 use App\Models\Pinjam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class PinjamController extends Controller
 {
@@ -86,8 +87,40 @@ class PinjamController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $validated = $request->validate([
+            'status' => 'required|in:dibatalkan,dikembalikan',
+        ]);
+
         $pinjam = Pinjam::findOrFail($id);
-        dd($request);
+
+        DB::transaction(function() use ($pinjam, $validated) {
+            if ($pinjam->status == 'diajukan' && $validated['status'] == 'dibatalkan') {
+                $pinjam->status = 'dibatalkan';
+            } else if ($pinjam->status == 'dipinjam' && $validated['status'] == 'dikembalikan') {
+                $pinjam->status = 'dikembalikan';
+            } else {
+                throw ValidationException::withMessages(['error' => 'Data tidak valid']);
+            }
+            $pinjam->save();
+
+            $barang = Barang::findOrFail($pinjam->barang_id);
+            $barang->stock += $pinjam->qty;
+            $barang->save();
+            
+            $this->writeHistory($pinjam);
+        });
+
+        return redirect()->route('dashboard')->with('success', 'Berhasil mengubah data');
+    }
+
+    private function writeHistory(Pinjam $pinjam) : void {
+        History::create([
+                'user_id' => $pinjam->user_id,
+                'admin_name' => auth()->user()->name,
+                'barang_id' => $pinjam->barang_id,
+                'qty' => $pinjam->qty,
+                'status' => $pinjam->status,
+            ]);
     }
 
     /**

@@ -67,7 +67,7 @@
                                                 <td class="whitespace-nowrap px-6 py-4">
                                                     <div class="flex flex-row gap-2 flex-wrap">
                                                     @if (auth()->user()->is_admin)
-                                                        <form action="{{ route('pinjam.update', $item->id) }}" method="post">
+                                                        <form action="{{ route('pinjaman.proses', $item->id) }}" method="post">
                                                             @csrf
                                                             @method('put')
                                                             <x-primary-button 
@@ -76,7 +76,7 @@
                                                                 value="dipinjam">Terima</x-primary-button>
                                                         </form>
 
-                                                        <form action="{{ route('pinjam.update', $item->id) }}" method="post">
+                                                        <form action="{{ route('pinjaman.proses', $item->id) }}" method="post">
                                                             @csrf
                                                             @method('put')
                                                             <x-primary-button 
@@ -86,10 +86,12 @@
                                                         </form>
                                                     @else
                                                         @if ($item->status == 'diajukan')
-                                                            <form action="{{ route('pinjam.destroy', $item->id) }}" method="post">
+                                                            <form action="{{ route('pinjam.update', $item->id) }}" method="post">
                                                                 @csrf
-                                                                @method('delete')
+                                                                @method('put')
                                                                 <x-danger-button 
+                                                                    name="status"
+                                                                    value="dibatalkan"
                                                                     onclick="return 
                                                                     confirm('Apakah anda ingin membatalkan peminjaman?')">Batalkan</x-danger-button>
                                                             </form>
