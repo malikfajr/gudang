@@ -14,15 +14,11 @@ return new class extends Migration
         Schema::create('pinjam', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('admin_id')
-                ->constrained('users', 'id')
-                ->nullable()
-                ->default(null);
             $table->foreignId('barang_id')->constrained('barang', 'id');
             $table->integer('qty');
             $table->date('starting_date');
             $table->date('ending_date');
-            $table->enum('status', ['diajukan', 'ditolak', 'dipinjam', 'dikembalikan']);
+            $table->enum('status', ['diajukan', 'dibatalkan', 'ditolak', 'dipinjam', 'dikembalikan']);
             $table->timestamps();
         });
     }

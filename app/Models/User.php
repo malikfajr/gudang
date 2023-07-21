@@ -21,7 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role_id',
+        'is_admin',
     ];
 
     /**
@@ -32,7 +32,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'role_id',
+        'is_admin',
     ];
 
     /**
@@ -43,5 +43,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'is_admin' => 'boolean',
     ];
 }

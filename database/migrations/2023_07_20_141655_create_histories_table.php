@@ -11,17 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hostories', function (Blueprint $table) {
+        Schema::create('histories', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('admin_id')
-                ->constrained('users', 'id')
-                ->nullable()
-                ->default(null);
+            $table->string('admin_name')->nullable();
             $table->foreignId('barang_id')->constrained('barang', 'id');
             $table->integer('qty');
-            $table->date('date');
-            $table->enum('status', ['diajukan', 'ditolak', 'dipinjam', 'dikembalikan']);
+            $table->date('date')->default(now());
+            $table->enum('status', ['diajukan', 'dibatalkan', 'ditolak', 'dipinjam', 'dikembalikan']);
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hostories');
+        Schema::dropIfExists('histories');
     }
 };
