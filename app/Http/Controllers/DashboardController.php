@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\History;
 use App\Models\Pinjam;
 use Illuminate\Http\Request;
 
@@ -11,7 +12,7 @@ class DashboardController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function index(Request $request)
     {
         $pinjam = Pinjam::query();
 
@@ -25,6 +26,19 @@ class DashboardController extends Controller
 
         return view('dashboard', [
             'pinjam' => $pinjam->get(),
+        ]);
+    }
+
+    public function history() {
+        $histories = History::query();
+
+        if (! auth()->user()->is_admin) {
+            $histories->where('user_id', auth()->user()->id);
+        }
+        $histories->orderBy('created_at', 'desc');
+
+        return view('history', [
+            'histories' => $histories->get()
         ]);
     }
 }
