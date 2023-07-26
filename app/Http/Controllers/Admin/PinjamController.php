@@ -46,4 +46,11 @@ class PinjamController extends Controller
                 'status' => $pinjam->status,
             ]);
     }
+
+    public function show($id) {
+        $pinjam = Pinjam::findOrFail($id);
+        $barang = $pinjam->barang;
+        
+        return view('admin.pinjam.show', compact('pinjam', 'barang'));
+    }
 }

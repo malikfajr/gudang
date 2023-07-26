@@ -35,6 +35,7 @@ class BarangController extends Controller
         $validated = $request->validate([
             'nama' => ['required', 'min:3'],
             'foto' => ['required', 'file', 'image', 'mimes:png,jpg,jpeg'], 
+            'harga' => ['required', 'numeric', 'min:1'],
             'stock' => ['required', 'numeric', 'min:1'],
             'deskripsi' => ['required'],
         ]);
@@ -73,6 +74,7 @@ class BarangController extends Controller
         $validated = $request->validate([
             'nama' => ['required', 'min:3'],
             'foto' => ['sometimes', 'file', 'image', 'mimes:png,jpg,jpeg'], 
+            'harga' => ['required', 'numeric', 'min:1'],
             'stock' => ['required', 'numeric', 'min:1'],
             'deskripsi' => ['required'],
         ]);

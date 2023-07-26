@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('barang_id')->constrained('barang', 'id');
             $table->integer('qty');
+            $table->integer('uang_muka')->nullable();
+            $table->integer('total_harga');
+            $table->integer('denda')->nullable();
             $table->date('starting_date');
             $table->date('ending_date');
             $table->enum('status', ['diajukan', 'dibatalkan', 'ditolak', 'dipinjam', 'dikembalikan']);

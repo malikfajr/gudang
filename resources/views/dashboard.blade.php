@@ -67,23 +67,41 @@
                                                 <td class="whitespace-nowrap px-6 py-4">
                                                     <div class="flex flex-row gap-2 flex-wrap">
                                                     @if (auth()->user()->is_admin)
-                                                        <form action="{{ route('pinjaman.proses', $item->id) }}" method="post">
-                                                            @csrf
-                                                            @method('put')
+                                                        <a href="{{ route('pinjam.show', $item->id) }}">
                                                             <x-primary-button 
                                                                 class="bg-green-700" 
-                                                                name="status" 
-                                                                value="dipinjam">Terima</x-primary-button>
-                                                        </form>
+                                                                >Show</x-primary-button>
+                                                        </a>
+                                                        @if ($item->status == 'diajukan')
+                                                            <form action="{{ route('pinjaman.proses', $item->id) }}" method="post">
+                                                                @csrf
+                                                                @method('put')
+                                                                <x-primary-button 
+                                                                    class="bg-green-700" 
+                                                                    name="status" 
+                                                                    value="dipinjam">Terima</x-primary-button>
+                                                            </form>
 
-                                                        <form action="{{ route('pinjaman.proses', $item->id) }}" method="post">
-                                                            @csrf
-                                                            @method('put')
-                                                            <x-primary-button 
-                                                                class="bg-red-700" 
-                                                                name="status" 
-                                                                value="ditolak">Tolak</x-primary-button>
-                                                        </form>
+                                                            <form action="{{ route('pinjaman.proses', $item->id) }}" method="post">
+                                                                @csrf
+                                                                @method('put')
+                                                                <x-primary-button 
+                                                                    class="bg-red-700" 
+                                                                    name="status" 
+                                                                    value="ditolak">Tolak</x-primary-button>
+                                                            </form>
+                                                        @else
+                                                            <form action="{{ route('pinjaman.proses', $item->id) }}" method="post">
+                                                                @csrf
+                                                                @method('put')
+                                                                <x-primary-button 
+                                                                    class="bg-red-700" 
+                                                                    name="status" 
+                                                                    value="dikembalikan">Kembalikan</x-primary-button>
+                                                            </form>
+                                                        @endif
+
+
                                                     @else
                                                         @if ($item->status == 'diajukan')
                                                             <form action="{{ route('pinjam.update', $item->id) }}" method="post">

@@ -26,6 +26,7 @@
                                         <tr>
                                             <th scope="col" class="px-6 py-4">Nama</th>
                                             <th scope="col" class="px-6 py-4">Gambar</th>
+                                            <th scope="col" class="px-6 py-4">Harga</th>
                                             <th scope="col" class="px-6 py-4">Stok</th>
                                             <th scope="col" class="px-6 py-4" width="250">Aksi</th>
                                         </tr>
@@ -39,6 +40,7 @@
                                                     <img src="{{ asset('storage/' . $item->foto) }}" width="100" alt="foto {{$item->nama}}">
                                                 </td>
                                                 <td class="whitespace-nowrap px-6 py-4">{{ $item->stock }}</td>
+                                                <td class="whitespace-nowrap px-6 py-4">Rp. {{ number_format($item->harga, 2) }}</td>
                                                 <td class="whitespace-nowrap px-6 py-4">
                                                     <div class="flex flex-row gap-2 flex-wrap">
                                                         <a href="{{ route('barang.edit', $item->id) }}" >

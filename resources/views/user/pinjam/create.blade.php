@@ -37,7 +37,7 @@
         <div class="max-w-xl">
             <div class="mt-2">
                 <x-input-label for="qty" :value="__('Jumlah Barang')" />
-                <x-text-input id="qty" name="qty" required min="1" max="{{ $barang->stock }}" type="number" value="{{ old('qty') }}" class="mt-1 block w-full" />
+                <x-text-input id="qty" name="qty" onchange="updateHarga()" required min="1" max="{{ $barang->stock }}" type="number" value="{{ old('qty') }}" class="mt-1 block w-full" />
                 <x-input-error :messages="$errors->get('qty')" class="mt-2" />
             </div>
 
@@ -46,6 +46,7 @@
                 <x-text-input id="starting_date" required 
                     min="{{ now()->format('Y-m-d') }}" 
                     name="starting_date" type="date" 
+                    onchange="updateHarga()"
                     value="{{ old('starting_date', now()->format('Y-m-d')) }}" class="mt-1 block w-full" />
                 <x-input-error :messages="$errors->get('starting_date')" class="mt-2" />
             </div>
@@ -55,8 +56,16 @@
                 <x-text-input id="ending_date" required 
                     min="{{ now()->addDays()->format('Y-m-d') }}" 
                     name="ending_date" type="date" 
+                    onchange="updateHarga()"
                     value="{{ old('ending_date', now()->addDays()->format('Y-m-d')) }}" class="mt-1 block w-full" />
                 <x-input-error :messages="$errors->get('ending_date')" class="mt-2" />
+            </div>
+
+            <div class="mt-2">
+                <x-input-label for="total_harga" :value="__('Total Harga')" />
+                <x-text-input id="total_harga" :disabled="true" 
+                    name="total_harga" type="text" 
+                    class="mt-1 block w-full" />
             </div>
 
             <div class="flex justify-end items-center gap-4 mt-2">
@@ -65,4 +74,23 @@
             </div>
         </div>
     </form>
+
+    <x-slot name="script">
+        <script defer>
+            function updateHarga() {
+                const harga = {{ $barang->harga }}
+                const start = new Date(document.querySelector("#starting_date").value)
+                const end = new Date(document.querySelector("#ending_date").value)
+
+                const diff_time = end.getTime() - start.getTime()
+                const diff_days = diff_time / (1000 * 3600 * 24);
+
+                const qty =  document.querySelector("#qty").value
+                const total_harga = (harga * diff_days * qty)
+                document.querySelector("#total_harga").value = `Rp. ${  new Intl.NumberFormat().format(total_harga) }`
+
+                console.log(new Intl.NumberFormat().format(total_harga));
+            }
+        </script>
+    </x-slot>
 </section>

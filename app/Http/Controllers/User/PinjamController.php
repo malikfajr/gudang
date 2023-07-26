@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\History;
 use App\Models\Pinjam;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -43,6 +45,12 @@ class PinjamController extends Controller
             'ending_date' => ['required', 'date', 'after_or_equal:starting_date'],
         ]);
 
+        $start = new DateTime($validated['starting_date']);
+        $end = new DateTime($validated['ending_date']);
+        $days = $start->diff($end)->format('%a');
+
+        $validated['total_harga'] = $validated['qty'] * $days * $barang->harga;
+
         $validated['barang_id'] = $id;
         $validated['user_id'] = auth()->user()->id;
         $validated['status'] = 'diajukan';
@@ -54,8 +62,8 @@ class PinjamController extends Controller
                 ]);
             }
 
-            $barang->stock -= $validated['qty'];
-            $barang->save();
+            // $barang->stock -= $validated['qty'];
+            // $barang->save();
 
             Pinjam::create($validated);
             History::create($validated);
@@ -96,16 +104,14 @@ class PinjamController extends Controller
         DB::transaction(function() use ($pinjam, $validated) {
             if ($pinjam->status == 'diajukan' && $validated['status'] == 'dibatalkan') {
                 $pinjam->status = 'dibatalkan';
-            } else if ($pinjam->status == 'dipinjam' && $validated['status'] == 'dikembalikan') {
-                $pinjam->status = 'dikembalikan';
-            } else {
+            } {
                 throw ValidationException::withMessages(['error' => 'Data tidak valid']);
             }
             $pinjam->save();
 
-            $barang = Barang::findOrFail($pinjam->barang_id);
-            $barang->stock += $pinjam->qty;
-            $barang->save();
+            // $barang = Barang::findOrFail($pinjam->barang_id);
+            // $barang->stock += $pinjam->qty;
+            // $barang->save();
             
             $this->writeHistory($pinjam);
         });

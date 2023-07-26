@@ -38,8 +38,11 @@ Route::middleware('auth')->group(function () {
     Route::put('pinjam/{id}', [User\PinjamController::class, 'update'])->name('pinjam.update');
 
     // Admin Route
-    Route::resource('barang', Admin\BarangController::class)->middleware(['isAdmin']);
-    Route::put('pinjam/{id}/proses', [Admin\PinjamController::class, 'prosesPeminjaman'])->middleware('isAdmin')->name('pinjaman.proses');
+    Route::middleware('isAdmin')->group(function() {
+        Route::resource('barang', Admin\BarangController::class);
+        Route::get('pinjam/{id}/detail', [Admin\PinjamController::class, 'show'])->name('pinjam.show');
+        Route::put('pinjam/{id}/proses', [Admin\PinjamController::class, 'prosesPeminjaman'])->name('pinjaman.proses');
+    });
 });
 
 require __DIR__.'/auth.php';

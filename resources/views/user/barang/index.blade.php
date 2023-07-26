@@ -19,6 +19,7 @@
                                     <div class="mt-4">
                                         {{-- <h3 class="text-gray-500 text-xs tracking-widest title-font mb-1">CATEGORY</h3> --}}
                                         <h2 class="text-gray-900 title-font text-lg font-medium">{{ $item->nama }}</h2>
+                                        <p class="mt-1">Harga: <strong>Rp. {{ $item->harga }}</strong></p>
                                         <p class="mt-1">Stock: <strong>{{ $item->stock }}</strong></p>
                                         <p class="mt-1">{{ Str::limit($item->deskripsi, 150) }}</p>
                                     </div>

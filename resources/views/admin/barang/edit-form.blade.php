@@ -33,6 +33,12 @@
             <x-input-error :messages="$errors->get('stock')" class="mt-2" />
         </div>
 
+        <div>
+            <x-input-label for="harga" :value="__('Harga Barang')" />
+            <x-text-input id="harga" name="harga" type="number" min="1" value="{{ old('harga', $barang->harga) }}" class="mt-1 block w-full" />
+            <x-input-error :messages="$errors->get('harga')" class="mt-2" />
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
         </div>
