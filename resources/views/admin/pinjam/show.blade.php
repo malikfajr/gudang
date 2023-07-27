@@ -105,7 +105,7 @@
                                         name="status" 
                                         value="ditolak">Tolak</x-primary-button>
                                 </div>
-                                @elseif ($pinjam->status == 'dipinjam')
+                                @elseif ($pinjam->status == 'dipinjam' || $pinjam->status == 'dikembalikan')
                                 <div class="mt-2">
                                     <x-input-label for="sisa_bayar" :value="__('Sisa Bayar')" />
                                     <x-text-input id="sisa_bayar"
@@ -126,12 +126,21 @@
                                         value="Rp. {{ number_format($denda, 2) }}" class="mt-1 block w-full" />
                                     <x-input-error :messages="$errors->get('denda')" class="mt-2" />
                                 </div>
-                                <div class="mt-2 flex items-baseline justify-evenly">
-                                    <x-primary-button 
-                                        class="bg-green-700" 
-                                        name="status" 
-                                        value="dikembalikan">Dikembalikan</x-primary-button>
-                                </div>
+                                    @if ($pinjam->status == 'dipinjam')
+                                    <div class="mt-2 flex items-baseline justify-evenly">
+                                        <x-primary-button 
+                                            class="bg-green-700" 
+                                            name="status" 
+                                            value="dikembalikan">Dikembalikan</x-primary-button>
+                                    </div>
+                                    @else
+                                    <div class="mt-2">
+                                        <x-input-label for="end" :value="__('Realisasi Pengembalian')" />
+                                        <x-text-input id="end" required 
+                                            readonly type="text"
+                                            value="{{ (new Carbon\Carbon($pinjam->updated_at))->locale('id')->translatedFormat('l, d F Y') }}" class="mt-1 block w-full" />
+                                    </div>
+                                    @endif
                                 @endif
                             </form>
                         </div>
