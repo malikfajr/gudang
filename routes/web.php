@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect()->route('login');
+    return view('welcome');
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
@@ -42,6 +42,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('barang', Admin\BarangController::class);
         Route::get('pinjam/{id}/detail', [Admin\PinjamController::class, 'show'])->name('pinjam.show');
         Route::put('pinjam/{id}/proses', [Admin\PinjamController::class, 'prosesPeminjaman'])->name('pinjaman.proses');
+        Route::get('income', Admin\IncomeController::class)->name('income');
     });
 });
 

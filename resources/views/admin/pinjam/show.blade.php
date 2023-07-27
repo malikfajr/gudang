@@ -37,61 +37,106 @@
                         </div>
                     </div>
 
-                    <div class="w-full max-w-xl">
-                        <h2 class="text-lg font-medium text-gray-900 mt-12">
-                            {{ __('Data Peminjaman') }}
-                        </h2>
-                        <div class="mt-2">
-                            <x-input-label for="qty" :value="__('Jumlah Barang')" />
-                            <x-text-input id="qty" name="qty" 
-                                type="number" readonly
-                                value="{{ $pinjam->qty }}" class="mt-1 block w-full" />
-                        </div>
-
-                        <div class="mt-2">
-                            <x-input-label for="starting_date" :value="__('Tanggal Peminjaman')" />
-                            <x-text-input id="starting_date" required 
-                                readonly type="text"
-                                value="{{ $pinjam->starting_date }}" class="mt-1 block w-full" />
-                        </div>
-
-                        <div class="mt-2">
-                            <x-input-label for="ending_date" :value="__('Tanggal Pengembalian')" />
-                            <x-text-input id="ending_date" required 
-                                name="ending_date" type="text" 
-                                readonly
-                                value="{{ $pinjam->ending_date }}" class="mt-1 block w-full" />
-                            <x-input-error :messages="$errors->get('ending_date')" class="mt-2" />
-                        </div>
-
-                        <div class="mt-2">
-                            <x-input-label for="total_harga" :value="__('Total Harga')" />
-                            <x-text-input id="total_harga" :disabled="true" 
-                                name="total_harga" type="text" 
-                                value="Rp. {{ number_format($pinjam->total_harga, 2) }}"
-                                class="mt-1 block w-full" />
-                        </div>
-                    </div>
-
-                    <div class="w-full max-w-xl">
-                        <h2 class="text-lg font-medium text-gray-900 mt-12">
-                            {{ __('Form Pemrosesan') }}
-                        </h2>
-                        <form action="" method="post">
+                    <div class="mt-3 space-y-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+                        <div class="w-full max-w-xl">
+                            <h2 class="text-lg font-medium text-gray-900 mt-12">
+                                {{ __('Data Peminjaman') }}
+                            </h2>
                             <div class="mt-2">
-                                <x-input-label for="uang_muka" :value="__('Uang Muka')" />
-                                <x-text-input id="uang_muka"
-                                    name="uang_muka" type="number" 
-                                    min="0"
-                                    value="{{ old('uang_muka') }}" class="mt-1 block w-full" />
-                                <x-input-error :messages="$errors->get('uang_muka')" class="mt-2" />
+                                <x-input-label for="qty" :value="__('Jumlah Barang')" />
+                                <x-text-input id="qty" name="qty" 
+                                    type="number" readonly
+                                    value="{{ $pinjam->qty }}" class="mt-1 block w-full" />
                             </div>
-                            @if ($pinjam->status == 'diajukan')
-                            @elseif ($pinjam->status == 'dipinjam')
-                            @elseif ($pinjam->status == 'ditolak')
-                            @endif
-                        </form>
+
+                            <div class="mt-2">
+                                <x-input-label for="starting_date" :value="__('Tanggal Peminjaman')" />
+                                <x-text-input id="starting_date" required 
+                                    readonly type="text"
+                                    value="{{ $pinjam->starting_date }}" class="mt-1 block w-full" />
+                            </div>
+
+                            <div class="mt-2">
+                                <x-input-label for="ending_date" :value="__('Tanggal Pengembalian')" />
+                                <x-text-input id="ending_date" required 
+                                    name="ending_date" type="text" 
+                                    readonly
+                                    value="{{ $pinjam->ending_date }}" class="mt-1 block w-full" />
+                                <x-input-error :messages="$errors->get('ending_date')" class="mt-2" />
+                            </div>
+
+                            <div class="mt-2">
+                                <x-input-label for="total_harga" :value="__('Total Harga')" />
+                                <x-text-input id="total_harga" :disabled="true" 
+                                    name="total_harga" type="text" 
+                                    value="Rp. {{ number_format($pinjam->total_harga, 2) }}"
+                                    class="mt-1 block w-full" />
+                            </div>
+                        </div>
+
+                        <div class="w-full max-w-xl mt-0">
+                            <h2 class="text-lg font-medium text-gray-900 mt-12">
+                                {{ __('Form Pemrosesan') }}
+                            </h2>
+
+                            <form action="{{ route('pinjaman.proses', $pinjam->id) }}" method="post">
+                                @csrf
+                                @method('put')
+                                <div class="mt-2">
+                                    <x-input-label for="uang_muka" :value="__('Uang Muka')" />
+                                    <x-text-input id="uang_muka"
+                                        name="uang_muka" 
+                                        min="0"
+                                        type="{{ $pinjam->status != 'diajukan' ? 'text' : 'number' }}" 
+                                        disabled="{{ $pinjam->status != 'diajukan' }}"
+                                        value="{{ old('uang_muka', 'Rp. ' . number_format($pinjam->uang_muka)) }}" class="mt-1 block w-full" />
+                                    <x-input-error :messages="$errors->get('uang_muka')" class="mt-2" />
+                                </div>
+
+
+                                @if ($pinjam->status == 'diajukan')
+                                <div class="mt-2 flex items-baseline justify-evenly">
+                                    <x-primary-button 
+                                        class="bg-green-700" 
+                                        name="status" 
+                                        value="dipinjam">Terima</x-primary-button>
+                                    <x-primary-button 
+                                        class="bg-red-700" 
+                                        name="status" 
+                                        value="ditolak">Tolak</x-primary-button>
+                                </div>
+                                @elseif ($pinjam->status == 'dipinjam')
+                                <div class="mt-2">
+                                    <x-input-label for="sisa_bayar" :value="__('Sisa Bayar')" />
+                                    <x-text-input id="sisa_bayar"
+                                        type="text" 
+                                        min="0"
+                                        disabled="true"
+                                        name="sisa_bayar"
+                                        value="Rp. {{ number_format($pinjam->sisa_bayar, 2) }}" class="mt-1 block w-full" />
+                                    <x-input-error :messages="$errors->get('sisa_bayar')" class="mt-2" />
+                                </div>
+                                <div class="mt-2">
+                                    <x-input-label for="denda" :value="__('Denda')" />
+                                    <x-text-input id="denda"
+                                        type="text" 
+                                        min="0"
+                                        disabled="true"
+                                        name="denda"
+                                        value="Rp. {{ number_format($denda, 2) }}" class="mt-1 block w-full" />
+                                    <x-input-error :messages="$errors->get('denda')" class="mt-2" />
+                                </div>
+                                <div class="mt-2 flex items-baseline justify-evenly">
+                                    <x-primary-button 
+                                        class="bg-green-700" 
+                                        name="status" 
+                                        value="dikembalikan">Dikembalikan</x-primary-button>
+                                </div>
+                                @endif
+                            </form>
+                        </div>
                     </div>
+
                 </section>
             </div>
         </div>

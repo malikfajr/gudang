@@ -40,4 +40,20 @@ class Pinjam extends Model
     public function getEndingDateAttribute ($value) {
         return (new Carbon($value))->locale('id')->translatedFormat('l, d F Y');
     }
+
+    public function getSisaBayarAttribute () {
+        return $this->total_harga - $this->uang_muka;
+    }
+
+    public function getIncomeAttribute () {
+        if ($this->status == 'dipinjam') {
+            return $this->uang_muka;
+        };
+
+        if ($this->status == 'dikembalikan') {
+            return $this->total_harga + $this->denda;
+        }
+
+        return 0;
+    }
 }

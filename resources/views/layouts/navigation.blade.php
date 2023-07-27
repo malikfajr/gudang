@@ -20,6 +20,10 @@
                         <x-nav-link :href="route('barang.index')" :active="request()->routeIs('barang.index')">
                             {{ __('Data Barang') }}
                         </x-nav-link>
+
+                        <x-nav-link :href="route('income')" :active="request()->routeIs('income')">
+                            {{ __('Pemasukan') }}
+                        </x-nav-link>
                     @else
                         <x-nav-link :href="route('list.barang')" :active="request()->routeIs('list.barang')">
                             {{ __('Daftar Barang') }}
