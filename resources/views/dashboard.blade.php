@@ -72,36 +72,6 @@
                                                                 class="bg-green-700" 
                                                                 >Show</x-primary-button>
                                                         </a>
-                                                        @if ($item->status == 'diajukan')
-                                                            <form action="{{ route('pinjaman.proses', $item->id) }}" method="post">
-                                                                @csrf
-                                                                @method('put')
-                                                                <x-primary-button 
-                                                                    class="bg-green-700" 
-                                                                    name="status" 
-                                                                    value="dipinjam">Terima</x-primary-button>
-                                                            </form>
-
-                                                            <form action="{{ route('pinjaman.proses', $item->id) }}" method="post">
-                                                                @csrf
-                                                                @method('put')
-                                                                <x-primary-button 
-                                                                    class="bg-red-700" 
-                                                                    name="status" 
-                                                                    value="ditolak">Tolak</x-primary-button>
-                                                            </form>
-                                                        @else
-                                                            <form action="{{ route('pinjaman.proses', $item->id) }}" method="post">
-                                                                @csrf
-                                                                @method('put')
-                                                                <x-primary-button 
-                                                                    class="bg-red-700" 
-                                                                    name="status" 
-                                                                    value="dikembalikan">Kembalikan</x-primary-button>
-                                                            </form>
-                                                        @endif
-
-
                                                     @else
                                                         @if ($item->status == 'diajukan')
                                                             <form action="{{ route('pinjam.update', $item->id) }}" method="post">
@@ -112,17 +82,6 @@
                                                                     value="dibatalkan"
                                                                     onclick="return 
                                                                     confirm('Apakah anda ingin membatalkan peminjaman?')">Batalkan</x-danger-button>
-                                                            </form>
-                                                        @endif
-
-                                                        @if ($item->status == 'dipinjam')
-                                                            <form action="{{ route('pinjam.update', $item->id) }}" method="post">
-                                                                @csrf
-                                                                @method('put')
-                                                                <x-primary-button 
-                                                                    class="bg-green-700" 
-                                                                    name="status" 
-                                                                    value="dikembalikan">Dikembalikan</x-primary-button>
                                                             </form>
                                                         @endif
                                                     @endif
