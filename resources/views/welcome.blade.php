@@ -44,7 +44,7 @@
                                 <a href="{{route('login')}}">
                                     <button class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Login</button>
                                 </a>
-                                <a href="[{route('register')}]">
+                                <a href="{{route('register')}}">
                                     <button class="ml-4 inline-flex text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded text-lg">Daftar</button>
                                 </a>
                                 @endauth
