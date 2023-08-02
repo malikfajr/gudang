@@ -41,7 +41,7 @@ class PinjamController extends Controller
 
                 $now = new DateTime();
                 $deadline = Carbon::parseFromLocale($pinjam->ending_date, 'id')->toDateTime();
-                $diff_days = $now->diff($deadline)->format('%a');
+                $diff_days = $deadline->diff($now)->format('%R%a');
                 if ($diff_days > 0) {
                     $pinjam->denda = $diff_days * 500; // 500 harga denda per hari
                 }
@@ -74,8 +74,7 @@ class PinjamController extends Controller
 
         $now = new DateTime();
         $deadline = Carbon::parseFromLocale($pinjam->ending_date, 'id')->toDateTime();
-        $diff_days = $now->diff($deadline)->format('%a');
-        
+        $diff_days = $deadline->diff($now)->format('%R%a');
         $denda = 0;
         if ($diff_days > 0) {
             $denda = $diff_days * 500; // 500 harga denda per hari

@@ -95,7 +95,6 @@ class BarangController extends Controller
     {
         $barang = Barang::findOrFail($id);
 
-        Storage::delete($barang->foto);
         $barang->delete();
 
         return redirect()->route('barang.index')->with('status', 'deleted');

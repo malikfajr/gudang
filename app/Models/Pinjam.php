@@ -26,7 +26,7 @@ class Pinjam extends Model
     ];
 
     public function barang() {
-        return $this->belongsTo(Barang::class, 'barang_id', 'id');
+        return $this->belongsTo(Barang::class, 'barang_id', 'id')->withTrashed();
     }
 
     public function user() {
