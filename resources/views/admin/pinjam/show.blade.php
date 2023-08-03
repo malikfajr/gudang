@@ -89,7 +89,7 @@
                                         min="0"
                                         type="{{ $pinjam->status != 'diajukan' ? 'text' : 'number' }}" 
                                         disabled="{{ $pinjam->status != 'diajukan' }}"
-                                        value="{{ old('uang_muka', 'Rp. ' . number_format($pinjam->uang_muka)) }}" class="mt-1 block w-full" />
+                                        value="{{ old('uang_muka', ( $pinjam->status != 'diajukan' ? 'Rp. ' . number_format($pinjam->uang_muka) : $pinjam->uang_muka )) }}" class="mt-1 block w-full" />
                                     <x-input-error :messages="$errors->get('uang_muka')" class="mt-2" />
                                 </div>
 
