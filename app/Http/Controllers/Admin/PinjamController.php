@@ -15,7 +15,7 @@ class PinjamController extends Controller
 {
     public function prosesPeminjaman(Request $request, $id)  {
         $validated = $request->validate([
-            'uang_muka' => 'required_if:status,dipinjam|numeric',
+            'uang_muka' => 'bail|required_if:status,dipinjam|integer',
             'status' => 'required|in:dipinjam,ditolak,dikembalikan',
         ]);
 
