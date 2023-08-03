@@ -87,6 +87,24 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+
+            </x-responsive-nav-link>
+            @if (auth()->user()->is_admin)
+                <x-responsive-nav-link :href="route('barang.index')" :active="request()->routeIs('barang.index')">
+                    {{ __('Data Barang') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('income')" :active="request()->routeIs('income')">
+                    {{ __('Pemasukan') }}
+                </x-responsive-nav-link>
+            @else
+                <x-responsive-nav-link :href="route('list.barang')" :active="request()->routeIs('list.barang')">
+                    {{ __('Daftar Barang') }}
+                </x-responsive-nav-link>
+            @endif
+
+            <x-responsive-nav-link :href="route('history')" :active="request()->routeIs('history')">
+                {{ __('History') }}
             </x-responsive-nav-link>
         </div>
 
