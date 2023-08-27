@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
         Route::get('pinjam/{id}/detail', [Admin\PinjamController::class, 'show'])->name('pinjam.show');
         Route::put('pinjam/{id}/proses', [Admin\PinjamController::class, 'prosesPeminjaman'])->name('pinjaman.proses');
         Route::get('income', Admin\IncomeController::class)->name('income');
+        Route::get('income/export', Admin\IncomeExportController::class)->name('income.export');
     });
 });
 

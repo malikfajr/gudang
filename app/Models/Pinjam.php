@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Pinjam extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'pinjam';
 
     protected $fillable = [
@@ -23,6 +23,10 @@ class Pinjam extends Model
         'starting_date',
         'ending_date',
         'status',
+    ];
+
+    protected $casts = [
+        'denda' => 'integer',
     ];
 
     public function barang() {
@@ -55,5 +59,9 @@ class Pinjam extends Model
         }
 
         return 0;
+    }
+
+    public function getDendaAttribute() {
+        return empty($this->denda) ? 0 : $this->denda;
     }
 }

@@ -9,6 +9,8 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <form action="" method="get" class="flex justify-end items-baseline gap-2 w-auto sm:mx-7">
+                    <a href="{{ route('income.export', ['start' => request()->start ?? '', 'end' => request()->end ?? '']) }}" class="inline-flex items-center px-4 py-2 bg-green-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 me-auto">Export</a>
+
                     <x-input-label for="start" :value="__('Tanggal Mulai')" />
                     <x-text-input id="start" name="start" type="date" value="{{ request()->start ?? '' }}" />
 
@@ -41,6 +43,7 @@
                                             <th scope="col" class="px-6 py-4">Nama Barang</th>
                                             <th scope="col" class="px-6 py-4">Tanggal Sewa</th>
                                             <th scope="col" class="px-6 py-4">Tanggal Kembali</th>
+                                            <th scope="col" class="px-6 py-4">Denda</th>
                                             <th scope="col" class="px-6 py-4">Total</th>
                                         </tr>
                                     </thead>
@@ -51,6 +54,7 @@
                                                 <td class="px-6 py-4">{{ $item->barang->nama }}</td>
                                                 <td class="px-6 py-4">{{ $item->starting_date }}</td>
                                                 <td class="px-6 py-4">{{ $item->ending_date }}</td>
+                                                <td class="px-6 py-4">Rp. {{ number_format($item->denda) }}</td>
                                                 <td class="px-6 py-4">Rp. {{ number_format($item->income) }}</td>
                                             </tr>
                                         @empty
@@ -58,7 +62,7 @@
                                                 <td class="whitespace-nowrap px-6 py-4 text-center font-bold" colspan="5">Data Belum Ada</td>
                                             </tr>
                                         @endforelse
-                                        
+
                                     </tbody>
                                 </table>
                             </div>
